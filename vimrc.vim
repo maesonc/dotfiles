@@ -105,6 +105,12 @@ set hlsearch                  " Enable Search Highlighting
 set encoding=utf-8
 
 "----------=== Colorsheme Settings ===----------
+" Kitty:
+" vim hardcodes background color erase even if the terminfo file does " not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color.
+let &t_ut=''
 
 if (has('termguicolors'))
 	set termguicolors
@@ -144,7 +150,7 @@ set hidden
 set nu
 " Relative line numbering
 set relativenumber
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Set splits to only appear on the right or on the bottom of the viewport
 set splitbelow
