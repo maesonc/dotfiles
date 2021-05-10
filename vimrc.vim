@@ -150,7 +150,11 @@ set hidden
 set nu
 " Relative line numbering
 set relativenumber
-set clipboard=unnamedplus
+if has("unix")
+	set clipboard=unnamed
+else
+	set clipboard=unnamedplus	
+endif
 
 " Set splits to only appear on the right or on the bottom of the viewport
 set splitbelow
