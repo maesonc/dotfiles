@@ -150,7 +150,7 @@ set hidden
 set nu
 " Relative line numbering
 set relativenumber
-if has("unix")
+if (has("macunix"))
 	set clipboard=unnamed
 else
 	set clipboard=unnamedplus	
