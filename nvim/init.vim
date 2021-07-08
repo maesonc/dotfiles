@@ -1,4 +1,3 @@
-
 "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 "                                                                              " 
 "                       __   _ _ _ __ ___  _ __ ___                            "
@@ -67,7 +66,6 @@ Plugin 'kaicataldo/material.vim'
 Plugin 'ghifarit53/tokyonight-vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'iamcco/markdown-preview.nvim' 
-Plugin 'vim-scripts/ZoomWin'
 Plugin 'christoomey/vim-tmux-navigator'
 
 call vundle#end()
@@ -76,17 +74,8 @@ call vundle#end()
 " Global Configs
 "============================================================
 
-"----------=== Airline Settings ===----------
 
-let g:airline_theme = 'molokai'
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_statusline_ontop = 0 
-
-"--------------------------------------------
-
-
+"----------=== Basics Settings ===----------
 
 set mouse=n
 set scrolloff=10
@@ -105,33 +94,29 @@ set ignorecase 		      " Make searches NOT case sensitive
 set hlsearch                  " Enable Search Highlighting
 set encoding=utf-8
 
+
+"----------=== Airline Settings ===----------
+
+let g:airline_theme = 'molokai'
+let g:airline#extensions#tabline#formatter='unique_tail_improved'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_statusline_ontop = 0 
+
+
 "----------=== Colorsheme Settings ===----------
-" Kitty:
-" vim hardcodes background color erase even if the terminfo file does " not contain bce (not to mention that libvte based terminals
-" incorrectly contain bce in their terminfo files). This causes
-" incorrect background rendering when using a color theme with a
-" background color.
-let &t_ut=''
 
 if (has('termguicolors'))
 	set termguicolors
 endif
 
+
 "Ocean Material
 colorscheme oceanic_material
-
-"Nord
-" let g:nord_cursor_line_number_background = 1
-" colorscheme nord
-"set background=light
-" set background=dark
-
-"Material
-"colorscheme material
-"let g:material_terminal_italics = 1
-"let g:material_theme_style = 'default-community'
-"hi Comment cterm=NONE
-
+let g:oceanic_material_background = 'ocean'
+let g:oceanic_material_allow_bold=1
+let g:oceanic_material_allow_italic=1
+let g:oceanic_material_allow_underline=1
 
 "--------------------------------------------
 
@@ -169,38 +154,29 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 " set backupdir=~/.vim/backup/ " where to put backup file
 " set dir=~/.vim/tmp      " tell vim where to put swap files
 
-" Set Visual Highlight Color
-" hi Visual  ctermbg=210 ctermfg=255
 
 " Set LineNumber Color
 hi LineNr guifg=#546d79
+"
 " Remove Cursorline Color
-hi clear CursorLine
 hi CursorLineNr guifg=#ffe47e
 
 " Highlight BadWhitespace Color
 highlight BadWhitespace ctermbg=red guibg=red
 
-" Set leader as ','
+" Set leader as 'space'
 let mapleader = " "
 
 " opens vimrc in vertical split
-nnoremap <leader>ev :vs ~/.vimrc<cr>
+nnoremap <leader>ev :vs ~/.config/nvim/init.vim<cr>
 
 " vertical split shortcut
 nnoremap <leader>vs :vs<cr>
 
-set termwinsize=15x0
-nnoremap <leader>t :term<cr>
+nnoremap <leader>t :below 15sp term://$SHELL<cr>i
 
 " show undotree
 nnoremap <leader>u :UndotreeShow<cr>
-
-" Disable arrowkeys
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
 
 " Remap FZF to Ctrl-P
 nnoremap <silent> <C-p> :Files<CR>
@@ -232,21 +208,9 @@ nnoremap <leader>nr :NERDTreeRefreshRoot<CR>
 " Remove search highlighting when pressing
 nnoremap =h :noh<Return>
 
-"YCM remove auto complete window after completion.
-" let g:ycm_autoclose_preview_window_after_completion=1
-" nnoremap <buffer><silent><leader>gr  :YcmCompleter GoToReferences<CR>
-" nnoremap <buffer><silent><leader>gd  :YcmCompleter GoTo<CR>
-
-" ZoomWin
-nnoremap <silent><leader>Z :ZoomWin<CR>
-
 " Smart-f
 nmap <leader>f <Plug>(coc-smartf-forward)
 nmap <leader>F <Plug>(coc-smartf-backward)
-" augroup Smartf
-"   autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#FF0000
-"   autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
-" augroup end
 
 "============================================================
 " Config for Coc
@@ -298,14 +262,50 @@ let g:UltiSnipsExpandTrigger='<leader><CR>'
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <C-w>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-w><C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-w>j :TmuxNavigateDown<cr>
-nnoremap <silent> <C-w><C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-w>k :TmuxNavigateUp<cr>
-nnoremap <silent> <C-w><C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-w>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-w><C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-w><C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-w><C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-w><C-l> :TmuxNavigateRight<cr>
-"
+
+if has('nvim')
+    augroup vimrc_term
+        autocmd!
+        autocmd WinEnter term://* nohlsearch
+        autocmd WinEnter term://* startinsert
+
+        autocmd TermOpen * tnoremap <buffer> <C-w>h <C-\><C-n> :TmuxNavigateLeft<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w>j <C-\><C-n> :TmuxNavigateDown<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w>k <C-\><C-n> :TmuxNavigateUp<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w>l <C-\><C-n> :TmuxNavigateRight<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w><C-h> <C-\><C-n> :TmuxNavigateLeft<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w><C-j> <C-\><C-n> :TmuxNavigateDown<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w><C-k> <C-\><C-n> :TmuxNavigateUp<cr>
+        autocmd TermOpen * tnoremap <buffer> <C-w><C-l> <C-\><C-n> :TmuxNavigateRight<cr>
+        " autocmd TermOpen * tnoremap <buffer> <C-h> <C-\><C-n> :TmuxNavigateLeft<cr>
+        " autocmd TermOpen * tnoremap <buffer> <C-j> <C-\><C-n> :TmuxNavigateDown<cr>
+        " autocmd TermOpen * tnoremap <buffer> <C-k> <C-\><C-n> :TmuxNavigateUp<cr>
+        " autocmd TermOpen * tnoremap <buffer> <C-l> <C-\><C-n> :TmuxNavigateRight<cr>
+    augroup END
+endif
+
+augroup vimrc_term_fzf 
+  autocmd!
+  " Do some other stuff independent of nvim.
+  if has('nvim')
+    autocmd FileType fzf tunmap <buffer> <C-w>h
+    autocmd FileType fzf tunmap <buffer> <C-w>j
+    autocmd FileType fzf tunmap <buffer> <C-w>k
+    autocmd FileType fzf tunmap <buffer> <C-w>l
+    " autocmd FileType fzf tunmap <buffer> <C-h>
+    " autocmd FileType fzf tunmap <buffer> <C-j>
+    " autocmd FileType fzf tunmap <buffer> <C-k>
+    " autocmd FileType fzf tunmap <buffer> <C-l>
+  endif
+augroup END
+
 "============================================================
 " Config for Nerd Tree
 "============================================================
