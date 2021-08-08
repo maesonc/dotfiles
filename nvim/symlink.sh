@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ln -s $HOME/git-personal/configs/nvim/init.vim $HOME/.config/nvim/init.vim
+ln -s -f $HOME/git-personal/dotfiles/nvim/init.vim $HOME/.config/nvim/init.vim
