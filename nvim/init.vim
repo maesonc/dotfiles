@@ -169,7 +169,7 @@ let mapleader = " "
 
 " zoom active pane
 nnoremap <leader>Z <C-w>\|
-nnoremap <leader>z <C-w>\=
+nnoremap <leader>z <C-w>=
 
 " opens vimrc in vertical split
 nnoremap <leader>ev :vs ~/.config/nvim/init.vim<cr>
