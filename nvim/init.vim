@@ -13,6 +13,7 @@
 "============================================================
 " 1) Install Vundle into Plugin Directory instead of Bundle
 "    (git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/plugin/Vundle.vim)
+"    (git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim)
 "
 " 2) Install Coc Marketplace
 "    CocInstall coc-marketplace
@@ -22,58 +23,54 @@
 "    npm install --prefix server
 "============================================================
 
-
 "============================================================
 " Vundle (Plugins)
 "============================================================
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
+"call vundle#begin()
 
 " alternatively, pass a path where Vundle should install plugins
-" call vundle#begin('~/some/path/here')
+call vundle#begin('~/.config/nvim/bundle/')
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
+Plugin 'frazrepo/vim-rainbow'
+Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'maksimr/vim-jsbeautify'
 Plugin 'mattn/emmet-vim'
 Plugin 'turbio/bracey.vim', {'do':'npm install --prefix server'}
-Plugin 'maksimr/vim-jsbeautify'
 Plugin 'neoclide/coc.nvim', {'branch':'release'}
 Plugin 'atom/fuzzy-finder'
 Plugin 'preservim/nerdtree'
-Plugin 'arcticicestudio/nord-vim'
-Plugin 'glepnir/oceanic-material'
-Plugin 'morhetz/gruvbox'
-" Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Lokaltog/powerline'   
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'Raimondi/delimitMate'
+Plugin 'pseewald/vim-anyfold'
 Plugin 'tpope/vim-commentary'
-Plugin 'mbbill/undotree'
-Plugin 'dart-lang/dart-vim-plugin'
-Plugin 'vim-scripts/indentpython.vim'
 Plugin 'KabbAmine/vCoolor.vim'
-Plugin 'Yggdroot/indentLine'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-eunuch'
-Plugin 'kaicataldo/material.vim'
-Plugin 'ghifarit53/tokyonight-vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'iamcco/markdown-preview.nvim' 
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'mileszs/ack.vim'
+Plugin 'voldikss/vim-floaterm'
+" Plugin 'sainnhe/everforest'
+
+" Plugin 'Raimondi/delimitMate'
+Plugin 'sainnhe/gruvbox-material'
 
 call vundle#end()
 
 "============================================================
 " Global Configs
 "============================================================
-
 
 "----------=== Basics Settings ===----------
 
@@ -83,6 +80,7 @@ set wrap
 set nocompatible              " not compatible with old fashioned vi mode
 set autoread		      " autoread when filed is changed from the outside
 syntax on
+set re=0
 filetype on                   " enable filetype detection
 filetype indent on 	      " enable filetype specific indenting
 filetype plugin on            " enable filetype specific plugins
@@ -94,31 +92,36 @@ set ignorecase 		      " Make searches NOT case sensitive
 set hlsearch                  " Enable Search Highlighting
 set encoding=utf-8
 
+" Yank filename to register.
+nnoremap <leader>FN :let @+ = expand("%")<cr>
 
-"----------=== Airline Settings ===----------
+" move section up and down - thx jat
+"vnoremap J :m '>+1<CR>gv
+"vnoremap K :m '<-2<CR>gv
 
-let g:airline_theme = 'molokai'
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_statusline_ontop = 0 
+let g:vim_current_word#highlight_current_word = 1
 
 
 "----------=== Colorsheme Settings ===----------
 
-if (has('termguicolors'))
+if has('termguicolors')
 	set termguicolors
 endif
 
+let g:gruvbox_material_background = 'soft'
+let g:gruvbox_material_better_performance = 1
+set background=dark
+colorscheme gruvbox-material
 
-"Ocean Material
-colorscheme oceanic_material
-let g:oceanic_material_background = 'ocean'
-let g:oceanic_material_allow_bold=1
-let g:oceanic_material_allow_italic=1
-let g:oceanic_material_allow_underline=1
+"----------=== Airline Settings ===----------
 
-"--------------------------------------------
+let g:airline_theme = 'tomorrow'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_statusline_ontop = 0 
+
+"-----------------------------------------------
 
 " This sets the status/powerline to always show (not only when more than one
 " buffer open)
@@ -156,16 +159,31 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 
 " Set LineNumber Color
-hi LineNr guifg=#546d79
+" hi LineNr guifg=#546d79
 "
 " Remove Cursorline Color
 hi CursorLineNr guifg=#ffe47e
 
-" Highlight BadWhitespace Color
-highlight BadWhitespace ctermbg=red guibg=red
+" Matching parenthesis color
+hi MatchParen cterm=bold guifg=#ffaea5 guibg=white
+
+" Highlight visual selection color
+hi Visual guifg=#000000 guibg=#FFFFFF gui=none
 
 " Set leader as 'space'
 let mapleader = " "
+"
+"----------=== Ack/Ag Settings ===----------
+
+if executable('ag') 
+	let g:ackprg = 'ag --vimgrep'
+endif
+
+nnoremap <leader>p :Ack<space>
+
+"-----------------------------------------------
+
+
 
 " zoom active pane
 nnoremap <leader>Z <C-w>\|
@@ -177,8 +195,6 @@ nnoremap <leader>ev :vs ~/.config/nvim/init.vim<cr>
 " vertical split shortcut
 nnoremap <leader>vs :vs<cr>
 
-nnoremap <leader>t :below 15sp term://$SHELL<cr>i
-
 " show undotree
 nnoremap <leader>u :UndotreeShow<cr>
 
@@ -186,13 +202,14 @@ nnoremap <leader>u :UndotreeShow<cr>
 nnoremap <silent> <C-p> :Files<CR>
 
 " Enable folding
-set foldmethod=indent   "fold based on indent
-set foldcolumn=1
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
+"set foldmethod=indent   "fold based on indent
+"set foldcolumn=1
+"set foldnestmax=10      "deepest fold is 10 levels
+"set nofoldenable        "dont fold by default
 set foldlevel=99         "this is just what i use
 
-let g:SimpylFold_docstring_preview = 1
+autocmd Filetype * AnyFoldActivate
+
 
 " Bracey shortcut
 nnoremap <leader>br :Bracey <cr>
@@ -212,19 +229,29 @@ nnoremap <leader>nr :NERDTreeRefreshRoot<CR>
 " Remove search highlighting when pressing
 nnoremap =h :noh<Return>
 
-" Smart-f
-nmap <leader>f <Plug>(coc-smartf-forward)
-nmap <leader>F <Plug>(coc-smartf-backward)
 
 "============================================================
 " Config for Coc
 "============================================================
+" Smart-f
+nmap f <Plug>(coc-smartf-forward)
+nmap F <Plug>(coc-smartf-backward)
+nmap ; <Plug>(coc-smartf-repeat)
+nmap , <Plug>(coc-smartf-repeat-opposite)
+
+augroup Smartf
+  autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
+  autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+augroup end
 
 nmap <silent><leader>gd <Plug>(coc-definition)
 nmap <silent><leader>GD :vs<CR><Plug>(coc-definition)
 nmap <silent><leader>gr <Plug>(coc-references)
 nmap <silent><leader>rr <Plug>(coc-rename)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
 nnoremap <leader>rrf :CocSearch <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>rf :CocAction('coc-refactor')<CR>
 
 " Show Documentation
 nnoremap <silent><leader>D  :call <SID>show_documentation()<CR>
@@ -253,6 +280,8 @@ nmap <silent><leader>ll :CocList --input=flutter commands<CR>
 nmap <silent><leader>le :CocList FlutterEmulators<CR>
 nmap <silent><leader>ld :CocList FlutterDevices<CR>
 
+autocmd FileType php set iskeyword+=$
+
 "============================================================
 " Config for UltiSnips
 "============================================================
@@ -274,6 +303,7 @@ nnoremap <silent> <C-w><C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-w><C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-w><C-l> :TmuxNavigateRight<cr>
 
+
 if has('nvim')
     augroup vimrc_term
         autocmd!
@@ -288,7 +318,7 @@ if has('nvim')
         autocmd TermOpen * tnoremap <buffer> <C-w><C-j> <C-\><C-n> :TmuxNavigateDown<cr>
         autocmd TermOpen * tnoremap <buffer> <C-w><C-k> <C-\><C-n> :TmuxNavigateUp<cr>
         autocmd TermOpen * tnoremap <buffer> <C-w><C-l> <C-\><C-n> :TmuxNavigateRight<cr>
-        " autocmd TermOpen * tnoremap <buffer> <C-h> <C-\><C-n> :TmuxNavigateLeft<cr>
+       " autocmd TermOpen * tnoremap <buffer> <C-h> <C-\><C-n> :TmuxNavigateLeft<cr>
         " autocmd TermOpen * tnoremap <buffer> <C-j> <C-\><C-n> :TmuxNavigateDown<cr>
         " autocmd TermOpen * tnoremap <buffer> <C-k> <C-\><C-n> :TmuxNavigateUp<cr>
         " autocmd TermOpen * tnoremap <buffer> <C-l> <C-\><C-n> :TmuxNavigateRight<cr>
@@ -356,19 +386,28 @@ autocmd BufNewFile,BufRead,BufEnter *.Rmd,*.rmd,*.md :syn match markdownIgnore "
 " JSON format (=j)
 nmap =j :%!python -m json.tool<CR>
 
+
+"============================================================
+" Config for Floaterm:
+"============================================================
+
+nnoremap <leader>\ :FloatermToggle<cr> 
+tnoremap <leader>\ <c-\><c-n> :FloatermToggle<cr>
+
+let g:floaterm_width =0.5 
+let g:floaterm_height = 0.5
+let g:floaterm_wintype = 'float'
+let g:floaterm_position = 'bottomright'
+let g:floaterm_title = 'Terminal $1|$2'
+let g:floaterm_borderchars = '─│─│╭╮╯╰'
+let g:floaterm_autoinsert = v:true
+hi Floaterm guibg=NONE
+hi FloatermBorder guifg=#FEFBEA
+
+
 "============================================================
 " Config for Python Filetypes:
 "============================================================
-
-"python with virtualenv support
-python3 << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-	project_base_dir = os.environ['VIRTUAL_ENV']
-	activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-	execfile(activate_this, dict(__file__=activate_this))
-EOF
 
 au BufNewFile,BufRead *.py
 			\ set tabstop=4|
@@ -397,12 +436,12 @@ autocmd Filetype python nnoremap <buffer> <F8> :w<CR>:ter python3 "%"<CR>
 " Macro to run code (F9)
 "autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 "autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-
+"
+" Highlight BadWhitespace Color
+highlight BadWhitespace ctermbg=red guibg=red
 " Indent backspace
 set backspace=indent,eol,start
 
-" Matching parenthesis color
-hi MatchParen cterm=bold guifg=#b9f6c9 guibg=NONE
 
 "============================================================
 " Config for HTML and CSS Filetypes:
@@ -415,11 +454,6 @@ au BufNewFile,BufRead *.html,*.htmi,*.php
 			\ setlocal autoindent|
 			\ setlocal smartindent
 
-
-"----------=== IndentLine Settings ===----------
-let g:indentLine_enabled = 0
-autocmd FileType html let indentLine_enabled = 1
-"-----------------------------------------------
 
 " Only allow Emmet to work for html/css files
 let g:user_emmet_install_global = 0
@@ -449,6 +483,8 @@ autocmd FileType json noremap <buffer> =c :call JsonBeautify()<CR>
 autocmd FileType jsx noremap <buffer> =c :call JsxBeautify()<CR>
 " for html
 autocmd FileType html,php noremap <buffer> =c :call HtmlBeautify()<CR>
+" for sql
+autocmd FileType sql noremap <buffer> =c :CocCommand sql.Format<CR>
 " for css or scss
 autocmd FileType css nmap  =c :call CSSBeautify()<CR>
 
@@ -467,7 +503,7 @@ au BufNewFile,BufRead *.dart
 " Config for Snippet Filetypes:
 "============================================================
 
-au BufNewFile,BufRead *snippets.
+au BufNewFile,BufRead *snippets
 			\ set tabstop=4|
 			\ set softtabstop=4|
 			\ set shiftwidth=4|
@@ -475,7 +511,19 @@ au BufNewFile,BufRead *snippets.
 			\ set autoindent
 
 
-au BufNewFile,BufRead *.txt,*.md.
+au BufNewFile,BufRead *.txt,*.md
+			\ set tabstop=2|
+			\ set softtabstop=2|
+			\ set shiftwidth=2|
+			\ set expandtab|
+			\ set autoindent
+
+
+"============================================================
+" Config for C# Filetypes:
+"============================================================
+
+au BufNewFile,BufRead *.cs
 			\ set tabstop=4|
 			\ set softtabstop=4|
 			\ set shiftwidth=4|
