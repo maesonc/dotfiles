@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packagesNeeded='git npm neovim fish curl locat cowsay php nodejs tmux alacritty'
+packagesNeeded='git npm neovim fish curl lolcat cowsay php nodejs tmux alacritty'
 
 if [ -x "$(command -v apk)" ];       then sudo apk add --no-cache $packagesNeeded 
 elif [ -x "$(command -v apt-get)" ]; then sudo apt-get install $packagesNeeded
