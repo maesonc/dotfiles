@@ -24,6 +24,16 @@ curl -sS https://starship.rs/install.sh
 ./master_symlink.sh
 ./nvim/setup.sh
 
+# Add fish to shells
 echo /usr/local/bin/fish | sudo tee -a /etc/shells
 
-sudo chsh -s /usr/local/bin/fish
+# Try to change fish shell
+if sudo chsh -s /usr/local/bin/fish; then
+	echo "Successfully changed default shell to fish. Please relogin.";
+else
+	if sudo chsh -s /usr/bin/fish;then
+		echo "Successfully changed default shell to fish. Please relogin.";
+	else
+		exit "Could not change default shell.";
+	fi
+fi
