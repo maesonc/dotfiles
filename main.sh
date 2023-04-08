@@ -23,3 +23,7 @@ curl -sS https://starship.rs/install.sh
 
 ./master_symlink.sh
 ./nvim/setup.sh
+
+echo /usr/local/bin/fish | sudo tee -a /etc/shells
+
+sudo chsh -s /usr/local/bin/fish
