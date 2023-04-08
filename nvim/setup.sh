@@ -1,11 +1,10 @@
 #!/bin/bash
 
-proceed_vim_setup=0;
-#  Install vim vundle.
+proceed_vim_setup=1;
+ #Install vim vundle.
 git --version 2>&1 >/dev/null # improvement by tripleee
 GIT_IS_AVAILABLE=$?
-# ...
-if [ $GIT_IS_AVAILABLE == 0 ];
+if [ $GIT_IS_AVAILABLE != 0 ];
 then
 	read -p "'git' command not found. Do you want to install Git? [y/N]" response 
 
@@ -24,28 +23,35 @@ then
 	fi
 fi
 
-if [$proceed_vim_setup == 1];
+if [ $proceed_vim_setup == 1 ];
 then
-	nvim_bundle_path="~/.config/nvim/bundle/Vundle.vim"
+	echo "Setting up vim";
+
+	echo "Cloning Vundle";
+	nvim_bundle_path=$HOME/.config/nvim/bundle/Vundle.vim
 	echo "Cloning from Vundle repository into $nvim_bundle_path";
 	git clone https://github.com/VundleVim/Vundle.vim.git "$nvim_bundle_path"
 
-	vim +PluginInstall +qall +silent
-	vim "CocInstall coc-tsserver" +qall +silent
-	vim "CocInstall coc-tslint" +qall +silent
-	vim "CocInstall coc-tailwindcss" +qall +silent
-	vim "CocInstall coc-sqlfluff" +qall +silent
-	vim "CocInstall coc-sql" +qall +silent
-	vim "CocInstall coc-snippets" +qall +silent
-	vim "CocInstall coc-smartf" +qall +silent
-	vim "CocInstall coc-pyright" +qall +silent
-	vim "CocInstall coc-phpactor" +qall +silent
-	vim "CocInstall coc-omnisharp" +qall +silent
-	vim "CocInstall coc-json" +qall +silent
-	vim "CocInstall coc-html" +qall +silent
-	vim "CocInstall coc-fzf-preview" +qall +silent
-	vim "CocInstall coc-css" +qall +silent
+	nvim +PluginInstall +qall +silent
+
+	# Install COC dependencides.
+	cd $HOME/.config/nvim/bundle/coc.nvim
+	npm install
+
+	nvim "CocInstall coc-tsserver" +qall +silent
+	nvim "CocInstall coc-tslint" +qall +silent
+	nvim "CocInstall coc-tailwindcss" +qall +silent
+	nvim "CocInstall coc-sqlfluff" +qall +silent
+	nvim "CocInstall coc-sql" +qall +silent
+	nvim "CocInstall coc-snippets" +qall +silent
+	nvim "CocInstall coc-smartf" +qall +silent
+	nvim "CocInstall coc-pyright" +qall +silent
+	nvim "CocInstall coc-phpactor" +qall +silent
+	nvim "CocInstall coc-omnisharp" +qall +silent
+	nvim "CocInstall coc-json" +qall +silent
+	nvim "CocInstall coc-html" +qall +silent
+	nvim "CocInstall coc-fzf-preview" +qall +silent
+	nvim "CocInstall coc-css" +qall +silent
 
 	echo "Nvim is ready to go!"
 fi
-
