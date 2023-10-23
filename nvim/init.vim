@@ -61,10 +61,13 @@ Plugin 'iamcco/markdown-preview.nvim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'mileszs/ack.vim'
 Plugin 'voldikss/vim-floaterm'
+Plugin 'OmniSharp/omnisharp-vim'
+" Plugin 'dense-analysis/ale'
 " Plugin 'sainnhe/everforest'
 
 " Plugin 'Raimondi/delimitMate'
-Plugin 'sainnhe/gruvbox-material'
+" Plugin 'sainnhe/gruvbox-material'
+Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
 
 call vundle#end()
 
@@ -108,14 +111,19 @@ if has('termguicolors')
 	set termguicolors
 endif
 
-let g:gruvbox_material_background = 'soft'
-let g:gruvbox_material_better_performance = 1
 set background=dark
-colorscheme gruvbox-material
+
+"let g:gruvbox_material_background = 'soft'
+"let g:gruvbox_material_better_performance = 1
+"colorscheme gruvbox-material
+
+let g:material_terminal_italics = 1
+let g:material_theme_style = 'palenight' 
+colorscheme material
 
 "----------=== Airline Settings ===----------
 
-let g:airline_theme = 'tomorrow'
+let g:airline_theme = 'material'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -529,3 +537,49 @@ au BufNewFile,BufRead *.cs
 			\ set shiftwidth=4|
 			\ set expandtab|
 			\ set autoindent
+
+"============================================================
+" Omnisharp Config
+"============================================================
+let g:OmniSharp_server_use_net6 = 1
+let g:OmniSharp_popup_position = 'peek'
+if has('nvim')
+  let g:OmniSharp_popup_options = {
+  \ 'winblend': 30,
+  \ 'winhl': 'Normal:Normal,FloatBorder:ModeMsg',
+  \ 'border': 'rounded'
+  \}
+else
+  let g:OmniSharp_popup_options = {
+  \ 'highlight': 'Normal',
+  \ 'padding': [0],
+  \ 'border': [1],
+  \ 'borderchars': ['─', '│', '─', '│', '╭', '╮', '╯', '╰'],
+  \ 'borderhighlight': ['ModeMsg']
+  \}
+endif
+let g:OmniSharp_popup_mappings = {
+\ 'sigNext': '<C-n>',
+\ 'sigPrev': '<C-p>',
+\ 'pageDown': ['<C-f>', '<PageDown>'],
+\ 'pageUp': ['<C-b>', '<PageUp>']
+\}
+
+let g:OmniSharp_highlight_groups = {
+\ 'ExcludedCode': 'NonText'
+\}
+
+" ALE: {{{
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+let g:ale_sign_info = '·'
+let g:ale_sign_style_error = '·'
+let g:ale_sign_style_warning = '·'
+
+let g:ale_linters = { 'cs': ['OmniSharp'] }
+" }}}
+
+" Asyncomplete: {{{
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
+" }}}
