@@ -63,11 +63,11 @@ Plugin 'mileszs/ack.vim'
 Plugin 'voldikss/vim-floaterm'
 Plugin 'OmniSharp/omnisharp-vim'
 " Plugin 'dense-analysis/ale'
-" Plugin 'sainnhe/everforest'
+Plugin 'sainnhe/everforest'
 
 " Plugin 'Raimondi/delimitMate'
 " Plugin 'sainnhe/gruvbox-material'
-Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
+" Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
 
 call vundle#end()
 
@@ -117,13 +117,15 @@ set background=dark
 "let g:gruvbox_material_better_performance = 1
 "colorscheme gruvbox-material
 
-let g:material_terminal_italics = 1
-let g:material_theme_style = 'palenight' 
-colorscheme material
+let g:everforest_background = 'soft'
+let g:everforest_enable_italic = 1
+let g:everforest_better_performance = 1
+let g:everforest_dim_inactive_windows = 1
+colorscheme everforest
 
 "----------=== Airline Settings ===----------
 
-let g:airline_theme = 'material'
+let g:airline_theme = 'everforest'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
