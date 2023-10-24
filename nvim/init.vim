@@ -111,13 +111,13 @@ if has('termguicolors')
 	set termguicolors
 endif
 
-set background=dark
+" set background=dark
 
 "let g:gruvbox_material_background = 'soft'
 "let g:gruvbox_material_better_performance = 1
 "colorscheme gruvbox-material
 
-let g:everforest_background = 'soft'
+let g:everforest_background = 'medium'
 let g:everforest_enable_italic = 1
 let g:everforest_better_performance = 1
 let g:everforest_dim_inactive_windows = 1
