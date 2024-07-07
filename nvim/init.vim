@@ -30,6 +30,7 @@
 " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=~/.config/nvim/bundle/Vundle.vim
+set diffopt+=followwrap
 "call vundle#begin()
 
 " alternatively, pass a path where Vundle should install plugins
@@ -48,8 +49,6 @@ Plugin 'neoclide/coc.nvim', {'branch':'release'}
 Plugin 'atom/fuzzy-finder'
 Plugin 'preservim/nerdtree'
 Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Lokaltog/powerline'   
 Plugin 'pseewald/vim-anyfold'
 Plugin 'tpope/vim-commentary'
@@ -57,16 +56,17 @@ Plugin 'KabbAmine/vCoolor.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-eunuch'
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'iamcco/markdown-preview.nvim' 
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'mileszs/ack.vim'
 Plugin 'voldikss/vim-floaterm'
 Plugin 'OmniSharp/omnisharp-vim'
+Plugin 'rebelot/kanagawa.nvim'
+Plugin 'nvim-lualine/lualine.nvim'
 " Plugin 'dense-analysis/ale'
-Plugin 'sainnhe/everforest'
+" Plugin 'sainnhe/everforest'
+" Plugin 'kevinhwang91/nvim-ufo', {'requires':'kevinhwang91/promise-async'}
 
 " Plugin 'Raimondi/delimitMate'
-" Plugin 'sainnhe/gruvbox-material'
 " Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
 
 call vundle#end()
@@ -94,6 +94,12 @@ set cursorline
 set ignorecase 		      " Make searches NOT case sensitive
 set hlsearch                  " Enable Search Highlighting
 set encoding=utf-8
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set autoindent
+set smartindent
 
 " Yank filename to register.
 nnoremap <leader>FN :let @+ = expand("%")<cr>
@@ -113,25 +119,13 @@ endif
 
 " set background=dark
 
-"let g:gruvbox_material_background = 'soft'
-"let g:gruvbox_material_better_performance = 1
-"colorscheme gruvbox-material
+" let g:everforest_background = 'medium'
+" let g:everforest_enable_italic = 1
+" let g:everforest_better_performance = 1
+" let g:everforest_dim_inactive_windows = 1
+" colorscheme everforest
 
-let g:everforest_background = 'medium'
-let g:everforest_enable_italic = 1
-let g:everforest_better_performance = 1
-let g:everforest_dim_inactive_windows = 1
-colorscheme everforest
-
-"----------=== Airline Settings ===----------
-
-let g:airline_theme = 'everforest'
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_statusline_ontop = 0 
-
-"-----------------------------------------------
+colorscheme kanagawa
 
 " This sets the status/powerline to always show (not only when more than one
 " buffer open)
@@ -191,8 +185,13 @@ endif
 
 nnoremap <leader>p :Ack<space>
 
-"-----------------------------------------------
+"----------=== Vim Git Fugitive Settings ===----------
 
+nnoremap <Leader>Gh :Gdiffsplit<CR>
+nnoremap <Leader>Gv :Gvdiffsplit<CR>
+nnoremap <Leader>Gi :Git<CR>:15wincmd_<CR>
+
+"-----------------------------------------------
 
 
 " zoom active pane
@@ -226,8 +225,7 @@ nnoremap <leader>br :Bracey <cr>
 nnoremap <leader>bs :BraceyStop <cr>
 
 " Markdown Preview shortcuts
-nnoremap <leader>mdp :MarkdownPreview <cr>
-nnoremap <leader>mds :MarkdownPreviewStop <cr>
+nnoremap <leader>mdp :CocCommand markdown-preview-enhanced.openPreview<cr>
 
 " Enable folding with the spacebar
 nnoremap <leader><Space> za
@@ -249,9 +247,11 @@ nmap F <Plug>(coc-smartf-backward)
 nmap ; <Plug>(coc-smartf-repeat)
 nmap , <Plug>(coc-smartf-repeat-opposite)
 
+hi CocMenuSel ctermbg=109 guibg=#13354A
+
 augroup Smartf
-  autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#6638F0
-  autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#504945
+  autocmd User SmartfEnter :hi Conceal ctermfg=220 guifg=#f44336 guibg=#ffffff
+  autocmd User SmartfLeave :hi Conceal ctermfg=239 guifg=#f44336 guibg=#ffffff
 augroup end
 
 nmap <silent><leader>gd <Plug>(coc-definition)
@@ -266,14 +266,21 @@ nnoremap <leader>rf :CocAction('coc-refactor')<CR>
 " Show Documentation
 nnoremap <silent><leader>D  :call <SID>show_documentation()<CR>
 
-" Use tab for trigger completion with characters ahead and navigate.
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
+" other plugin before putting this into your config
 inoremap <silent><expr> <TAB>
-			\ pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! s:show_documentation()
 	if (index(['vim','help'], &filetype) >= 0)
@@ -420,9 +427,9 @@ hi FloatermBorder guifg=#FEFBEA
 "============================================================
 
 au BufNewFile,BufRead *.py
-			\ set tabstop=4|
-			\ set softtabstop=4|
-			\ set shiftwidth=4|
+			\ set tabstop=2|
+			\ set softtabstop=2|
+			\ set shiftwidth=2|
 			\ set textwidth=79|
 			\ set expandtab|
 			\ set autoindent|
@@ -457,20 +464,22 @@ set backspace=indent,eol,start
 " Config for HTML and CSS Filetypes:
 "============================================================
 au BufNewFile,BufRead *.html,*.htmi,*.php
-			\ setlocal tabstop=4|
-			\ setlocal softtabstop=4|
-			\ setlocal shiftwidth=4|
+			\ setlocal tabstop=2|
+			\ setlocal softtabstop=2|
+			\ setlocal shiftwidth=2|
 			\ setlocal expandtab|
 			\ setlocal autoindent|
-			\ setlocal smartindent
+			"\ setlocal smartindent
 
 
 " Only allow Emmet to work for html/css files
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,php EmmetInstall
-autocmd FileType html,css,php imap <buffer> <leader><tab> <plug>(emmet-expand-abbr)
+let g:html_indent_script1 = "zero" 
+let g:html_indent_style1 = "inc" 
+autocmd FileType html,css,php,vue EmmetInstall
+autocmd FileType html,css,php,vue imap <buffer> <leader><tab> <plug>(emmet-expand-abbr)
 
-" autocmd FileType html,css nnoremap -c :exe ':silent !open -a /Applications/Google_Chrome.app'<CR>
+" autocmd FileType html,css nnoremap <leader>gc :exe ':silent !open -a /Applications/Google_Chrome.app'<CR>
 " NOT WORKING FOR NOW
 
 
@@ -478,12 +487,13 @@ autocmd FileType html,css,php imap <buffer> <leader><tab> <plug>(emmet-expand-ab
 " Config for Typescript Filetypes:
 "============================================================
 
-au BufNewFile,BufRead *.js
-			\ set tabstop=4|
-			\ set softtabstop=4|
-			\ set shiftwidth=4|
+au BufNewFile,BufRead *.js,*.ts,*.vue
+			\ set tabstop=2|
+			\ set softtabstop=2|
+			\ set shiftwidth=2|
 			\ set expandtab|
-			\ set autoindent
+			\ set autoindent|
+			\ set smartindent
 
 " Java beautify
 autocmd FileType typescript,javascript nmap <buffer>  =c :call JsBeautify()<CR>
@@ -508,6 +518,8 @@ au BufNewFile,BufRead *.dart
 			\ set shiftwidth=4|
 			\ set expandtab|
 			\ set autoindent
+
+autocmd FileType dart setlocal commentstring=//\ %s
 
 "============================================================
 " Config for Snippet Filetypes:
@@ -534,9 +546,9 @@ au BufNewFile,BufRead *.txt,*.md
 "============================================================
 
 au BufNewFile,BufRead *.cs
-			\ set tabstop=4|
-			\ set softtabstop=4|
-			\ set shiftwidth=4|
+			\ set tabstop=2|
+			\ set softtabstop=2|
+			\ set shiftwidth=2|
 			\ set expandtab|
 			\ set autoindent
 
@@ -585,3 +597,14 @@ let g:ale_linters = { 'cs': ['OmniSharp'] }
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
 " }}}
+
+
+"----------=== Lualine Settings ===----------
+
+lua << END
+require('lualine').setup()
+options = { theme = 'kanagawa' }
+END
+
+"-----------------------------------------------
+

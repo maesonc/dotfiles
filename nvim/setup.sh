@@ -52,6 +52,10 @@ then
 	nvim +"CocInstall -sync coc-html" +qall
 	nvim +"CocInstall -sync coc-fzf-preview" +qall
 	nvim +"CocInstall -sync coc-css" +qall
+	nvim +"CocInstall -sync coc-webview" +qall
+	nvim +"CocInstall -sync coc-smartf" +qall
+	nvim +"CocInstall -sync coc-marketplace" +qall
+	nvim +"CocInstall -sync coc-godot" +qall
 
 	echo "Nvim is ready to go!"
 fi

@@ -25,6 +25,7 @@ curl -sS https://starship.rs/install.sh
 
 ./master_symlink.sh
 ./nvim/setup.sh
+./tmux/setup.sh
 
 # Add fish to shells
 echo /usr/local/bin/fish | sudo tee -a /etc/shells
