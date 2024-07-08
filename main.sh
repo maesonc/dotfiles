@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packagesNeeded='git npm neovim fish curl lolcat cowsay php nodejs tmux alacritty fortune';
+packagesNeeded='git npm fish curl lolcat cowsay php nodejs tmux alacritty fortune python3 fzf ripgrep';
 
 is_mac=0;
 
@@ -10,6 +10,13 @@ elif [ -x "$(command -v dnf)" ];     then sudo dnf install $packagesNeeded
 elif [ -x "$(command -v zypper)" ];  then sudo zypper install $packagesNeeded
 elif [ -x "$(command -v brew)" ];  then brew install $packagesNeeded; $is_mac=1;
 else echo "FAILED TO INSTALL PACKAGE: Package manager not found. You must manually install: $packagesNeeded">&2; $proceed_vim_setup=0; fi
+
+# Install neovim separately
+if [ -x "$(command -v brew)" ];  then 
+	brew install neovim;
+else
+	sudo snap install nvim --classic;
+fi
 
 mkdir -p $HOME/.config/alacritty
 mkdir -p $HOME/.config/nvim

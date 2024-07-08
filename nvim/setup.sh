@@ -25,37 +25,13 @@ fi
 
 if [ $proceed_vim_setup = 1 ];
 then
-	echo "Setting up vim";
+	echo "Setting up vim with kickstart and lazy...";
 
 	echo "Cloning Vundle";
 	nvim_bundle_path=$HOME/.config/nvim/bundle/Vundle.vim
 	echo "Cloning from Vundle repository into $nvim_bundle_path";
-	git clone https://github.com/VundleVim/Vundle.vim.git "$nvim_bundle_path"
-
-	nvim +PluginInstall +qall +silent
-
-	# Install COC dependencides.
-	cd $HOME/.config/nvim/bundle/coc.nvim
-	npm install
-
-	nvim +"CocInstall -sync coc-tsserver" +qall
-	nvim +"CocInstall -sync coc-tslint" +qall
-	nvim +"CocInstall -sync coc-tailwindcss" +qall
-	nvim +"CocInstall -sync coc-sqlfluff" +qall
-	nvim +"CocInstall -sync coc-sql" +qall
-	nvim +"CocInstall -sync coc-snippets" +qall
-	nvim +"CocInstall -sync coc-smartf" +qall
-	nvim +"CocInstall -sync coc-pyright" +qall
-	nvim +"CocInstall -sync coc-phpactor" +qall
-	nvim +"CocInstall -sync coc-omnisharp" +qall
-	nvim +"CocInstall -sync coc-json" +qall
-	nvim +"CocInstall -sync coc-html" +qall
-	nvim +"CocInstall -sync coc-fzf-preview" +qall
-	nvim +"CocInstall -sync coc-css" +qall
-	nvim +"CocInstall -sync coc-webview" +qall
-	nvim +"CocInstall -sync coc-smartf" +qall
-	nvim +"CocInstall -sync coc-marketplace" +qall
-	nvim +"CocInstall -sync coc-godot" +qall
+	git clone git@github.com:maesonc/mc-kickstart-modular.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
 	echo "Nvim is ready to go!"
+	echo "Please install Mason LSP configurations where needed."
 fi
