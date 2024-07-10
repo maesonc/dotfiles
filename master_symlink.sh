@@ -2,7 +2,6 @@
 
 echo "Setting symlinks....";
 
-ln -s -f $HOME/git-personal/MAESON/dotfiles/nvim/init.vim $HOME/.config/nvim/init.vim
 ln -s -f $HOME/git-personal/MAESON/dotfiles/tmux/tmux.conf $HOME/.tmux.conf
 ln -s -f $HOME/git-personal/MAESON/dotfiles/alacritty/alacritty.toml $HOME/.config/alacritty/alacritty.toml
 ln -s -f $HOME/git-personal/MAESON/dotfiles/fish/config.fish $HOME/.config/fish/config.fish

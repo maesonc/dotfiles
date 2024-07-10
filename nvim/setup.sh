@@ -27,7 +27,7 @@ if [ $proceed_vim_setup = 1 ];
 then
 	echo "Setting up vim with kickstart and lazy...";
 
-	echo "Cloning Vundle";
+	echo "Cloning maeson kickstart...";
 	nvim_bundle_path=$HOME/.config/nvim/bundle/Vundle.vim
 	echo "Cloning from Vundle repository into $nvim_bundle_path";
 	git clone git@github.com:maesonc/mc-kickstart-modular.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
