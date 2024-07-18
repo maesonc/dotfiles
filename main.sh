@@ -51,12 +51,14 @@ fi
 if [ $ismac == 1 ];
 then
 	echo "Installing hack font on Mac";
-	brew tap homebrew/cask-fonts && brew install font-hack-nerd-font
+	brew tap homebrew/cask-fonts && brew install font-hack-nerd-font && brew install font-iosevka-nerd-font
 else
 	echo "Installing hack font on Linux";
 	cd $HOME/git-personal/MAESON/  && git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts;
 	cd $HOME/git-personal/MAESON/nerd-fonts;
 	git sparse-checkout add patched-fonts/Hack;
 	source install.sh Hack;
+	git sparse-checkout add patched-fonts/Iosevka;
+	source install.sh Iosevka;
 fi
 

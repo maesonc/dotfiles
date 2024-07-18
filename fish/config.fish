@@ -10,6 +10,27 @@ function fish_greeting
 	fortune | cowsay -f tux | lolcat
 end
 
+function fish_mode_prompt
+  switch $fish_bind_mode
+    case default
+      set_color --bold red
+      echo 'N'
+    case insert
+      set_color --bold green
+      echo 'I'
+    case replace_one
+      set_color --bold green
+      echo 'R'
+    case visual
+      set_color --bold brmagenta
+      echo 'V'
+    case '*'
+      set_color --bold red
+      echo '?'
+  end
+  set_color normal
+end
+
 #funcsave fish_greeting
 
 # <------- Fish Interactive ------->
@@ -35,6 +56,7 @@ fish_add_path /usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 fish_add_path /usr/local/opt/gnu-sed/libexec/gnubin:$PATH
 fish_add_path /Users/maesonchan/.flutter/bin
 fish_add_path /usr/local/go/bin
+fish_add_path ~/Personal/bin
 
 
 # <------- Starship ------->
