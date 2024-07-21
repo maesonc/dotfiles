@@ -1,6 +1,6 @@
 #!/bin/bash
 
-packagesNeeded='git npm fish curl lolcat cowsay php nodejs tmux alacritty fortune python3 fzf ripgrep';
+packagesNeeded='git npm fish curl lolcat cowsay php nodejs tmux alacritty fortune python3 fzf ripgrep yarn';
 
 is_mac=0;
 
