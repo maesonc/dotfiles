@@ -68,7 +68,6 @@ symbol = " "
 [os.symbols]
 Arch = " "
 Fedora = " "
-Kali = " "
 Linux = " "
 Macos = " "
 Ubuntu = " "
