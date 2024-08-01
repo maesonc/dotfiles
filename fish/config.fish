@@ -59,11 +59,12 @@ fish_add_path /usr/local/go/bin
 fish_add_path ~/Personal/bin
 
 
-# <------- Starship ------->
-starship init fish | source
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Created by `pipx` on 2024-07-01 12:06:56
 set PATH $PATH /Users/maesonchan/.local/bin
+
+# <------- Starship ------->
+starship init fish | source
+
