@@ -1,0 +1,86 @@
+add_newline = true
+command_timeout = 500
+scan_timeout = 10
+
+# Replace the ">" symbol in the prompt with "→"
+# [character]                            # The name of the module we are configuring is "character"
+# success_symbol = "[→](bold green)"     # The "success_symbol" segment is being set to "?" with the color "bold green"
+# error_symbol = "[✗](bold red)"
+
+[battery]
+disabled = false
+charging_symbol=""
+
+[time]
+disabled = false
+use_12hr = true
+utc_time_offset = "+8"
+style = "yellow"
+
+[username]
+style_user = "grey bold"
+style_root = "red bold"
+show_always = true
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+[[battery.display]]
+threshold = 40
+style = "bold yellow"
+
+[[battery.display]]
+threshold = 100 
+style = "bold green"
+
+[git_branch]
+always_show_remote=true
+symbol = " "
+
+[aws]
+symbol = "  "
+
+[dart]
+symbol = " "
+
+[directory]
+read_only = " 󰌾"
+
+[docker_context]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[java]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[nodejs]
+symbol = " "
+
+[os.symbols]
+Arch = " "
+Fedora = " "
+Linux = " "
+Macos = " "
+Ubuntu = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+
+[php]
+symbol = " "
+
+[python]
+symbol = " "
+
+[rust]
+symbol = "󱘗 "
