@@ -1,7 +1,8 @@
 if status is-interactive
 and not set -q TMUX
-    #tmux attach -t default || tmux new -s default
-    exec tmux
+    # tmux attach || exec tmux new-session && exit
+    tmux -a || tmux 
+  #exec tmux
 end
 
 # <------- Fish Greeting ------->
@@ -43,6 +44,7 @@ end
 fish_vi_key_bindings
 alias vim="nvim"
 alias cat="bat"
+alias glgga="git log --oneline --graph --decorate --all"
 
 # <------- Paths ------->
 fish_add_path /Applications/XAMPP/xamppfiles

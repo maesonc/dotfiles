@@ -63,7 +63,7 @@ style = "Regular"
 padding.x = 10
 padding.y = 10
 decorations = "buttonless"
-opacity = 0.9
+opacity = 0.85
 blur = true
 
 [shell]
