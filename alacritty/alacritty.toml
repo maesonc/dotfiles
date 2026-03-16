@@ -67,5 +67,5 @@ opacity = 0.85
 blur = true
 
 [shell]
-program = "/usr/local/bin/fish"
+program = "/usr/bin/fish"
 args = ["--login", "-c", "tmux a -t base || tmux new -s base"]

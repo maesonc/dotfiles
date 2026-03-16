@@ -8,7 +8,7 @@ end
 # <------- Fish Greeting ------->
 
 function fish_greeting
-	fortune | cowsay -f tux | lolcat
+  pokeget random --hide-name | fastfetch --file-raw -
 end
 
 function fish_mode_prompt
